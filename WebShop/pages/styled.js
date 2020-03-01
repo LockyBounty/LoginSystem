@@ -1,53 +1,50 @@
 import Link from 'next/link';
+import {useRouter} from 'next/router';
 import Layout from '../components/MyLayout';
+import Markdown from 'react-markdown';
 
-function getPosts(){
-    return [
-        { id: 'hello-nextjs', title: 'Hello Next.js' },
-        { id: 'learn-nextjs', title: 'Learn Next.js is awesome' },
-        { id: 'deploy-nextjs', title: 'Deploy apps with ZEIT' }
-    ];
-}
 
-export default function Blog() {
+export default () => {
+    const router = useRouter();
     return (
       <Layout>
-        <h1>My Blog</h1>
-        <ul>
-          {getPosts().map(post => (
-            <li key={post.id}>
-              <Link href="/p/[id]" as={`/p/${post.id}`}>
-                <a>{post.title}</a>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <style jsx>{`
-          h1,
-          a {
+        <h1>{router.query.id}</h1>
+        <div className="markdown">
+          <Markdown
+            source={`
+  This is our blog post.
+  Yes. We can have a [link](/link).
+  And we can have a title as well.
+  
+  ### This is a title
+  
+  And here's the content.
+        `}
+          />
+        </div>
+        <style jsx global>{`
+          .markdown {
             font-family: 'Arial';
-            color: green;
+            color : red;
           }
   
-          ul {
-            padding: 0;
-          }
-  
-          li {
-            list-style: none;
-            margin: 5px 0;
-          }
-  
-          a {
+          .markdown a {
             text-decoration: none;
-            color: orange;
+            color: blue;
           }
   
-          a:hover {
+          .markdown a:hover {
             opacity: 0.6;
+          }
+  
+          .markdown h3 {
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            color:green;
           }
         `}</style>
       </Layout>
     );
-  }
+  };
 
